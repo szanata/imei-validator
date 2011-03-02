@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="author" content="St&#233;fano Stypulkowski">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="A online IMEI validator app!">
+    <meta name="keywords" content="IMEI, validator">
+    <meta name="version" content="1">
+
+    <title>IMEI Validator</title>
+		
+		<script type="text/javascript" src="jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="imei.js"></script>
+    <script type="text/javascript" src="jquery.disableSelection.1.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="imei.css" />
+
+  </head>
+  <body>
+    
+    <div id="title">
+      <span>imei validator</span>
+    </div>
+    
+    <div id="imei_bar_wrapper">
+    
+      <div id="imei_bar">
+      
+        <div id="controls">
+        
+          <input id="imei" maxlength="15"/>
+          
+          <button id="validate">validate</button>
+          
+          <div style="clear:both;"></div>
+          
+        </div>
+        
+        <div id="result">
+          <span id="message"></span>&nbsp;<a href="#">try again</a>
+        </div>
+        
+      </div>
+        
+    </div>
+    
+    <img src="iceon.png" alt="logo" id="logo" href="http://iceon.me" target="blank"/>
+  </body>
+</html>
