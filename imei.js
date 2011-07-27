@@ -1,21 +1,12 @@
 $(function(){
 
   $('#imei').focus();
-  
-  //disable CTRL +A
-  $(window).bind('keydown keyup keypress',function (e){
-    if (e.keyCode === 65 && e.ctrlKey){
-      return false;
-    }
-  });
-  
-  $('*').disableSelection();
+  $('body').unselectable();
 
   /**
   * creates the tooltip
   */
   $('body').append('<div id="tip-wrapper"><div id="tip-arrow-border"></div><div id="tip-arrow"></div><div id="tip-body"></div></div>');
-  
   $('#tip-body').append('Thanks for using my imei validator app. Please visit my website on <a href="http://www.iceon.me" target="blank">iceon.me</a>');  
   
   function isIMEIValid(imei){
@@ -31,14 +22,10 @@ $(function(){
       multipliedDigit;
     
     for (var i = 13, li = 0; i >= li; i--) {
-      
       multipliedDigit = parseInt(imei.charAt(i), 10) * factor;
-
       sum += (multipliedDigit >= 10 ? ((multipliedDigit % 10) + 1) : multipliedDigit);
-      
       (factor === 1 ? factor++ : factor--);
     }
-    
     checkDigit = ((10 - (sum % 10)) % 10);
     
     return !(checkDigit !== parseInt(imei.charAt(14), 10))
@@ -144,52 +131,46 @@ $(function(){
     }
   ];
 
-  var getReportingBody = function(num){
-
+  var getReportingBody = function getReportingBody(num){
     for (var i = 0, l = REPORTING_BODYS.length; i < l;i++){
       if (num === REPORTING_BODYS[i].number){
         return REPORTING_BODYS[i];
       }
     }
     return null;
-
   }
 
-	$("#result > a").bind("click",function(){
-  
+	$('#result > a').bind('click',function(e){
     $('#result').fadeOut(500, function(){
-    
       $('#controls').fadeIn(500, function (){
-      
         $('#imei').focus();
       });
     });
-    return false;
+    e.preventDefault();
   });
   
   $("#validate").bind("click",function(){
-
    
     $('#controls').fadeOut(500,function (){
             
       var 
         msg = '',
         imei = $("#imei").val(),
-        r = null;
+        r;
             
       if ( imei !== '' && isIMEIValid(imei) ){
       
         r = getReportingBody(parseInt(imei.substring(0,2)));
       
         if (r !== null){
-            msg = 'It\'s a valid one, the Reporting Body is ' + r.name + ' from ' + r.location + '.'
+            msg = "It's a valid one, the Reporting Body is " + r.name + " from " + r.location + "."
         }else{
-            msg = 'It\'s a valid one, but I don\'t known the Reporting Body =/.'
+            msg = "It's a valid one, but the Reporting Body is unknown."
         }
         
       }else{
       
-        msg = 'Sorry, this is invalid :\'(';
+        msg = 'Sorry, this is invalid.'
       }
         
       $('#result > span').text(msg);
