@@ -1,25 +1,10 @@
 $(function(){
 
-  $('#imei').focus();
-  $('body').unselectable();
-
-  /**
-  * creates the tooltip
-  */
-  $('body').append('<div id="tip-wrapper"><div id="tip-arrow-border"></div><div id="tip-arrow"></div><div id="tip-body"></div></div>');
-  $('#tip-body').append('Thanks for using my imei validator app. Please visit my website on <a href="http://www.iceon.me" target="blank">iceon.me</a>');  
-  
   function isIMEIValid(imei){
   
-    if (!/^[0-9]{15}$/.test(imei)) {
-      return false;
-    }
+    if (!/^[0-9]{15}$/.test(imei)) {return false;}
     
-    var 
-      sum = 0,
-      factor = 2,
-      checkDigit,
-      multipliedDigit;
+    var sum = 0, factor = 2, checkDigit, multipliedDigit;
     
     for (var i = 13, li = 0; i >= li; i--) {
       multipliedDigit = parseInt(imei.charAt(i), 10) * factor;
@@ -131,51 +116,50 @@ $(function(){
     }
   ];
 
-  var getReportingBody = function getReportingBody(num){
+  function getReportingBody(num){
     for (var i = 0, l = REPORTING_BODYS.length; i < l;i++){
       if (num === REPORTING_BODYS[i].number){
-        return REPORTING_BODYS[i];
+        return REPORTING_BODYS[i]
       }
     }
     return null;
   }
-
-	$('#result > a').bind('click',function(e){
-    $('#result').fadeOut(500, function(){
-      $('#controls').fadeIn(500, function (){
-        $('#imei').focus();
-      });
-    });
-    e.preventDefault();
-  });
   
-  $("#validate").bind("click",function(){
-   
+  function validate(){
     $('#controls').fadeOut(500,function (){
-            
-      var 
-        msg = '',
-        imei = $("#imei").val(),
-        r;
+    
+      var msg, imei = $('#imei').val(), r;
             
       if ( imei !== '' && isIMEIValid(imei) ){
-      
         r = getReportingBody(parseInt(imei.substring(0,2)));
-      
-        if (r !== null){
-            msg = "It's a valid one, the Reporting Body is " + r.name + " from " + r.location + "."
-        }else{
-            msg = "It's a valid one, but the Reporting Body is unknown."
-        }
-        
-      }else{
-      
+        msg = (r !== null) 
+          ? "It's a valid one, the Reporting Body is " + r.name + " from " + r.location + "."
+          : "It's a valid one, but the Reporting Body is unknown."
+      }else{      
         msg = 'Sorry, this is invalid.'
       }
-        
-      $('#result > span').text(msg);
-      
-      $('#result').fadeIn();
+
+      $('#result > span').text(msg)
+      $('#result').fadeIn()
     });          
+  }
+
+  $('#imei').trigger('focus')
+  
+	$('#result > a').bind('click',function (e){
+    $('#result').fadeOut(500, function (){
+      $('#controls').fadeIn(500, function (){
+        $('#imei').trigger('focus')
+      });
+    });
+  });
+  
+  $('#imei').bind('keyup', function (e){
+    if (e.keyCode == 13){
+      validate()
+    }
+  })
+  $('#validate').bind('click',function (){
+    validate()
   });
 });
